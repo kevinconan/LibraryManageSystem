@@ -1,4 +1,4 @@
 LibraryManageSystem
 ===================
 
-蛋疼的图书馆管理系统，基于servlet/JSP
+A simple Library Manage System base on servlet/JSP
