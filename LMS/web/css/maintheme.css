@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	margin:auto;
+	background-color:#0FF;
+	font-size:12px;
+	font-family:"微软雅黑";
+}
+a:link,a:visited {
+	font-size:12px;
+	text-decoration: none;
+	color:#666;
+}
+a:hover{}
+.maintable{
+	border:none;
+	text-align:center;
+}
+#main{
+	
+}
+.components{
+	margin:10px;
+}
+#searchbox{
+	margin-bottom:150px;
+	margin-top:auto;
+	margin-left:auto;
+	margin-right:auto;
+}
+#headleft{
+	float:left;
+}
+#headright{
+	margin-right:20px;
+	float:right;
+}
+#avatar{
+	padding:10px;
+}
+#footleft{
+	margin-left:10px;
+	float:left;
+}
+#footright{
+	margin-left:20px;
+	float:left;
+}
+#title{
+	font-size:36px;
+	font-family:"幼圆";
+	font-weight:bold;
+	text-align:center;
+	padding:20px;
+	color:#333;
+}
+#loginbox{
+	margin:50px auto;
+}
+#username{
+	font-size:14px;
+	font-family:"幼圆";
+}
+#infobox{
+	margin-top:50px;
+	margin-bottom:150px;
+	margin-left:auto;
+	margin-right:auto;
+}
