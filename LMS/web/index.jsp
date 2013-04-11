@@ -6,6 +6,15 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+	String identity;
+	if (request.getSession().getAttribute("AdminLoginInfo") != null) {
+		identity = "admin";
+	} else {
+		identity = "user";
+	}
+
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,9 +22,13 @@
 		<link href="css/maintheme.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+
 		<table width="90%" border="0" align="center" class="maintable" id="main">
-			<tr>
-				<td><jsp:include flush="true" page="header.jsp"/></td>
+			<tr><%
+				if (identity.equals("admin")) {
+				%><td><jsp:include flush="true" page="AdminHeader.jsp"/></td><%						} else {
+				%><td><jsp:include flush="true" page="header.jsp"/></td><%							}
+				%>
 			</tr>
 			<tr>
 				<td><table width="100%" border="0" class="maintable">
@@ -31,7 +44,11 @@
 					</table></td>
 			</tr>
 			<tr>
-				<td><jsp:include flush="true" page="footer.jsp"/></td>
+				<%
+					if (identity.equals("admin")) {
+				%><td><jsp:include flush="true" page="AdminFooter.jsp"/></td><%						} else {
+				%><td><jsp:include flush="true" page="footer.jsp"/></td><%							}
+				%>
 			</tr>
 		</table>
 

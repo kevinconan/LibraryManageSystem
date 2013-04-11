@@ -22,6 +22,22 @@ public class BookBean {
 	private int SNUM;
 	private int BNUM;
 
+	public BookBean() {
+	}
+
+	public BookBean(boolean b) {
+		ISBN = "";
+		BNAME = "";
+		AUTHER = "";
+		PRESS = "";
+		PRICE = 0;
+		PTIME = "";
+		BTYPE = "";
+		BAUTH = 0;
+		SNUM = 0;
+		BNUM = 0;
+	}
+
 	public String getISBN() {
 		return ISBN;
 	}

@@ -28,7 +28,7 @@
 								<td colspan="2" align="center"><div id="title">用户登录</div></td>
 							</tr>
                             <tr>
-								<td><form action="Login" method="post"><table width="100%" border="0">
+								<td><form  action="Login" method="post"><table width="100%" border="0">
 											<tr>
 												<td width="33%" align="right">借书卡ID：</td>
 												<td width="33%" align="center"><input type="text" name="bcid" id="textfield"></td>

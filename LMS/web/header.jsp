@@ -26,18 +26,18 @@
 							%>
                         <td><a href="index.jsp">首页</a></td>
 						<td><a href="userinfo.jsp">个人信息</a></td>
-						<td><a href="#">借阅管理</a></td>
+						<td><a href="RecordC">借阅管理</a></td>
 					</tr>
 				</table>
 			</div></td>
-		<td><div id="headright">
-				<%
+		<td><div id="headright"><table width="100%" border="0" class="text"><tr>
+						<%
 
-					if (bcb != null) {
-				%><a href="Logout">安全退出</a><%					} else {
-				%><a href="Login.jsp">用户登录</a><%						}
-				%>
+							if (bcb != null) {
+						%><td><a href="Logout">安全退出</a></td><%					} else {
+						%><td><a href="Login.jsp">用户登录</a></td><%						}
+						%>
 
-			</div></td>
+					</tr></table></div></td>
 	</tr>
 </table>

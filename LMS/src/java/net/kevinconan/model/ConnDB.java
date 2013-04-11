@@ -54,7 +54,6 @@ public class ConnDB {
 	}
 
 	public void execUpdate() {
-		int a = 0;
 		try {
 			execUpdateNum = preparedStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -81,21 +80,23 @@ public class ConnDB {
 
 	public void close() {
 		try {
-			if (resultSet != null & !resultSet.isClosed()) {
-				resultSet.close();
+			if (resultSet != null) {
+				if (!resultSet.isClosed()) {
+					resultSet.close();
+				}
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(ConnDB.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		try {
-			if (preparedStatement != null & !preparedStatement.isClosed()) {
+			if (!preparedStatement.isClosed()) {
 				preparedStatement.close();
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(ConnDB.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		try {
-			if (connection != null & !connection.isClosed()) {
+			if (!connection.isClosed()) {
 				connection.close();
 			}
 		} catch (SQLException ex) {
@@ -122,11 +123,5 @@ public class ConnDB {
 
 	public void setDb(String db) {
 		this.db = db;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize(); //To change body of generated methods, choose Tools | Templates.
-		close();
 	}
 }

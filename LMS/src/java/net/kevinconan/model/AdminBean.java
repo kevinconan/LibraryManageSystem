@@ -5,45 +5,55 @@
 package net.kevinconan.model;
 
 /**
- *管理员表javaBean类
+ * 管理员表javaBean类
+ * <p/>
  * @author Kevinconan
  */
 public class AdminBean {
-     private String ADID;
-     private String APASSWD;
-     private String ANAME;
-     private String AGENDER;
 
-    public String getADID() { 
-        return ADID;
-    }
+	private String ADID;
+	private String APASSWD;
+	private String ANAME;
+	private String AGENDER;
+	private String AVATAR;
 
-    public void setADID(String ADID) {
-        this.ADID = ADID;
-    }
+	public String getAVATAR() {
+		return AVATAR;
+	}
 
-    public String getAPASSWD() {
-        return APASSWD;
-    }
+	public void setAVATAR(String AVATAR) {
+		this.AVATAR = AVATAR;
+	}
 
-    public void setAPASSWD(String APASSWD) {
-        this.APASSWD = APASSWD;
-    }
+	public String getADID() {
+		return ADID;
+	}
 
-    public String getANAME() {
-        return ANAME;
-    }
+	public void setADID(String ADID) {
+		this.ADID = ADID;
+	}
 
-    public void setANAME(String ANAME) {
-        this.ANAME = ANAME;
-    }
+	public String getAPASSWD() {
+		return APASSWD;
+	}
 
-    public String getAGENDER() {
-        return AGENDER;
-    }
+	public void setAPASSWD(String APASSWD) {
+		this.APASSWD = APASSWD;
+	}
 
-    public void setAGENDER(String AGENDER) {
-        this.AGENDER = AGENDER;
-    }
-             
+	public String getANAME() {
+		return ANAME;
+	}
+
+	public void setANAME(String ANAME) {
+		this.ANAME = ANAME;
+	}
+
+	public String getAGENDER() {
+		return AGENDER;
+	}
+
+	public void setAGENDER(String AGENDER) {
+		this.AGENDER = AGENDER;
+	}
 }

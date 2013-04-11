@@ -34,8 +34,8 @@ public class Login extends HttpServlet {
 		String bcid = request.getParameter("bcid");
 		String password = request.getParameter("password");
 		String from = request.getParameter("from");
-		if (from == null) {
-			from = "index";
+		if (from == null | from.equals("null")) {
+			from = "index.jsp";
 		}
 
 		BookCardBO bcbo = new BookCardBO();
@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
 		if (bcbo.checkBookCard(bcid, password)) {
 			BookCardBean bcb = bcbo.showBookCard(bcid);
 			request.getSession().setAttribute("loginInfo", bcb);
-			request.getRequestDispatcher(from + ".jsp").forward(request, response);
+			request.getRequestDispatcher(from).forward(request, response);
 
 		} else {
 			request.getRequestDispatcher("Login.jsp?error=1").forward(request, response);

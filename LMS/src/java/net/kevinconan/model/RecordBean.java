@@ -4,8 +4,7 @@
  */
 package net.kevinconan.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * 借书记录表javabean
@@ -14,29 +13,32 @@ import java.util.Date;
  */
 public class RecordBean {
 
-	private String SN;
+	private long SN;
 	private String ISBN;
 	private String ADID;
 	private String BCID;
-	private String ODATE;
-	private String RDATE;
+	private Date ODATE;
+	private Date RDATE;
 	private String EXTBK;
 	private String RNOTE;
+	private String BNAME;
 
-	public RecordBean(boolean flag) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		ODATE = sdf.format(new Date());
-		RDATE = sdf.format(new Date());
+	public String getBNAME() {
+		return BNAME;
+	}
+
+	public void setBNAME(String BNAME) {
+		this.BNAME = BNAME;
 	}
 
 	public RecordBean() {
 	}
 
-	public String getSN() {
+	public long getSN() {
 		return SN;
 	}
 
-	public void setSN(String SN) {
+	public void setSN(long SN) {
 		this.SN = SN;
 	}
 
@@ -64,19 +66,19 @@ public class RecordBean {
 		this.BCID = BCID;
 	}
 
-	public String getODATE() {
+	public Date getODATE() {
 		return ODATE;
 	}
 
-	public void setODATE(String ODATE) {
+	public void setODATE(Date ODATE) {
 		this.ODATE = ODATE;
 	}
 
-	public String getRDATE() {
+	public Date getRDATE() {
 		return RDATE;
 	}
 
-	public void setRDATE(String RDATE) {
+	public void setRDATE(Date RDATE) {
 		this.RDATE = RDATE;
 	}
 

@@ -5,19 +5,21 @@
 package net.kevinconan.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.kevinconan.model.BookBO;
+import net.kevinconan.model.BookBean;
 
 /**
- * 用于处理关于书籍的增加删除等功能的控制器
- * <p/>
+ *
  * @author Diluka
  */
-@WebServlet(name = "BookCl", urlPatterns = {"/BookCl"})
-public class BookCl extends HttpServlet {
+@WebServlet(name = "SearchCard", urlPatterns = {"/SearchCard"})
+public class SearchCard extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP
@@ -32,11 +34,35 @@ public class BookCl extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");//设置接收编码格式
 		response.setContentType("text/html;charset=UTF-8");
-		String type = request.getParameter("type");
-
-		if (type.equals("addbook")) {
+		int pageSize = 10;
+		int pageNow = 1;
+		String searchString = request.getParameter("searchText");
+		String pageNowString = request.getParameter("pageNow");
+		String identity = request.getParameter("admin");
+		if (identity == null) {
+			identity = "user";
 		}
+		if (pageNowString != null) {
+			pageNow = Integer.parseInt(pageNowString);
+		}
+		System.out.println(pageNow);
+		BookBO bbo = new BookBO();
+		bbo.setSearchPattern(searchString);
+		int resultCount = bbo.getSearchCount();
+		int pageCount = (int) Math.ceil(1.0 * resultCount / pageSize);
+		request.setAttribute("pageCount", pageCount + "");
+
+		ArrayList<BookBean> al = bbo.searchBook(pageNow, pageSize);
+		request.setAttribute("searchresult", al);
+		System.out.println(al);
+		if (identity.equals("admin")) {
+			//request.getRequestDispatcher("")
+		} else {
+			request.getRequestDispatcher("searchresult.jsp?searchText=" + searchString + "&pageNow=" + pageNow).forward(request, response);
+		}
+
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -34,16 +34,20 @@ public class SearchBook extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");//设置接收编码格式
 		response.setContentType("text/html;charset=UTF-8");
-		int pageSize = 3;
+		int pageSize = 10;
 		int pageNow = 1;
 		String searchString = request.getParameter("searchText");
 		String pageNowString = request.getParameter("pageNow");
-		System.out.println(searchString);
+		String identity = request.getParameter("admin");
+		if (identity == null) {
+			identity = "user";
+		}
 		if (pageNowString != null) {
 			pageNow = Integer.parseInt(pageNowString);
 		}
-
+		System.out.println(pageNow);
 		BookBO bbo = new BookBO();
 		bbo.setSearchPattern(searchString);
 		int resultCount = bbo.getSearchCount();
@@ -52,8 +56,12 @@ public class SearchBook extends HttpServlet {
 
 		ArrayList<BookBean> al = bbo.searchBook(pageNow, pageSize);
 		request.setAttribute("searchresult", al);
-		request.getRequestDispatcher("searchresult.jsp?searchText=" + searchString + "&pageNow=" + pageNow).forward(request, response);
-
+		System.out.println(al);
+		if (identity.equals("admin")) {
+			//request.getRequestDispatcher("")
+		} else {
+			request.getRequestDispatcher("searchresult.jsp?searchText=" + searchString + "&pageNow=" + pageNow).forward(request, response);
+		}
 
 	}
 

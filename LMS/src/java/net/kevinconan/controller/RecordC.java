@@ -6,15 +6,19 @@ package net.kevinconan.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.kevinconan.model.*;
 
 /**
- *
- * @author Diluka
+ * 关于借阅记录操作的控制器
+ * <p/>
+ * @author Kevin
  */
-public class Test extends HttpServlet {
+@WebServlet(name = "RecordC", urlPatterns = {"/RecordC"})
+public class RecordC extends HttpServlet {
 
 	/**
 	 * Processes requests for both HTTP
@@ -29,7 +33,43 @@ public class Test extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=UTF-8");
+
+		BookCardBean bcb = (BookCardBean) request.getSession().getAttribute("loginInfo");
+		if (bcb == null) {
+			response.sendRedirect("Login.jsp?from=RecordC");
+			return;
+		}
+
+		String viewType = request.getParameter("viewType");
+		String pageNowString = request.getParameter("pageNow");
+		if (viewType == null) {
+			viewType = "all";
+		}
+
+		int pageNow = 1;
+		int pageSize = 10;
+
+		if (pageNowString != null) {
+			pageNow = Integer.parseInt(pageNowString);
+		}
+
+
+		RecordBO rbo = new RecordBO();
+
+		if (viewType.equals("in")) {
+			request.setAttribute("recordList", rbo.getInRecordListByBCID(bcb.getBCID(), pageNow, pageSize));
+		} else if (viewType.equals("out")) {
+			request.setAttribute("recordList", rbo.getOutRecordListByBCID(bcb.getBCID(), pageNow, pageSize));
+		} else {
+			request.setAttribute("recordList", rbo.getAllRecordListByBCID(bcb.getBCID(), pageNow, pageSize));
+		}
+
+		int rowCount = rbo.getRowCount();
+		int pageCount = (int) Math.ceil(1.0 * rowCount / pageSize);
+		request.getRequestDispatcher("mybooks.jsp?viewType=" + viewType + "&pageNow=" + pageNow + "&pageCount=" + pageCount).forward(request, response);
 
 	}
 

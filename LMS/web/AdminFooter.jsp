@@ -12,5 +12,5 @@
 
 <div class="text" id="foot">
   <div id="footleft">Copyright by Kevin</div>
-  <div id="footright"><a href="AdminLogin.jsp">管理员登录</a></div>
+  <div id="footright"><a href="#">关于</a></div>
 </div>

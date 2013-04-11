@@ -4,10 +4,12 @@
  */
 package net.kevinconan.model;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.kevinconan.tools.ToSHA_1;
+import net.kevinconan.tools.SimpleMessageDigest;
 
 /**
  * 借书卡管理类
@@ -16,7 +18,14 @@ import net.kevinconan.tools.ToSHA_1;
  */
 public class BookCardBO {
 
-	//登陆验证
+	/**
+	 * 登陆验证
+	 * <p/>
+	 * @param u 用户名
+	 * @param p 密码
+	 * <p/>
+	 * @return
+	 */
 	public boolean checkBookCard(String u, String p) {
 		boolean b = false;
 		ConnDB cdb = new ConnDB();
@@ -37,20 +46,26 @@ public class BookCardBO {
 		} catch (SQLException ex) {
 			Logger.getLogger(AdminBO.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			//  cdb.close();
+			cdb.close();
 		}
 
-		ToSHA_1 ts = new ToSHA_1(p);
+		SimpleMessageDigest md = new SimpleMessageDigest();
 		// System.out.println(p);
 		//  System.out.println(ts.getSHA_1String());
-		if (ts.getSHA_1String().equals(pwdb)) {
+		if (md.isStringMatchSHA1(p, pwdb)) {
 			b = true;
 		}
 
 		return b;
 	}
 
-	//返回借书卡信息
+	/**
+	 * 返回借书卡信息
+	 * <p/>
+	 * @param String BCID
+	 * <p/>
+	 * @return BookCardBean
+	 */
 	public BookCardBean showBookCard(String BCID) {
 		BookCardBean bb = new BookCardBean();
 		String sql = "select * from bookcard where BCID='" + BCID + "'";
@@ -75,12 +90,19 @@ public class BookCardBO {
 		}
 		return bb;
 	}
-	//修改借书卡
 
+	/**
+	 * 修改借书卡
+	 * <p/>
+	 * @param bcb
+	 *               <p/>
+	 * @return
+	 */
 	public boolean updateBookCard(BookCardBean bcb) {
 		boolean b = false;
-		ToSHA_1 psw = new ToSHA_1(bcb.getBPASSWD());
-		bcb.setBPASSWD(psw.getSHA_1String());
+		SimpleMessageDigest psw = new SimpleMessageDigest();
+
+		bcb.setBPASSWD(psw.getSHA1String(bcb.getBPASSWD()));
 		String sql = "update bookcard set BAPSSWD='" + bcb.getBPASSWD() + "',BSEX='" + bcb.getBSEX() + "',BAUTH='" + bcb.getBAUTH() + "',BDATE='" + bcb.getBDATE() + "',BAVATAR='" + bcb.getBAVATAR() + "' where BCID='" + bcb.getBCID() + "'";
 		ConnDB cdb = new ConnDB();
 		cdb.connect();
@@ -93,7 +115,13 @@ public class BookCardBO {
 		return b;
 	}
 
-	//注销借书卡
+	/**
+	 * 注销借书卡
+	 * <p/>
+	 * @param BCID
+	 *                <p/>
+	 * @return
+	 */
 	public boolean delBookCard(String BCID) {
 		boolean b = false;
 		String sql = "delete from bookcard where BCID='" + BCID + "'";
@@ -109,7 +137,13 @@ public class BookCardBO {
 
 	}
 
-	//注册借书卡
+	/**
+	 * 注册借书卡
+	 * <p/>
+	 * @param bcb
+	 * <p/>
+	 * @return
+	 */
 	public boolean addBookCard(BookCardBean bcb) {
 		boolean b = false;
 		ConnDB cdb = new ConnDB();
@@ -124,9 +158,10 @@ public class BookCardBO {
 			if (cdb.getResultSet().next()) {
 				return false;
 			}
-			//转换密码为SHA_1
-			ToSHA_1 psw = new ToSHA_1(bcb.getBPASSWD());
-			bcb.setBPASSWD(psw.getSHA_1String());
+			//转换密码为SHA_
+			SimpleMessageDigest psw = new SimpleMessageDigest();
+
+			bcb.setBPASSWD(psw.getSHA1String(bcb.getBPASSWD()));
 
 
 			//写入数据库
@@ -145,5 +180,68 @@ public class BookCardBO {
 			cdb.close();
 		}
 		return b;
+	}
+
+	/**
+	 * 搜索借书卡
+	 * <p/>
+	 * @param s        搜索字符串
+	 * @param pageNow  当前页
+	 * @param pageSize 每页条目数
+	 * <p/>
+	 * @return ArrayList<BookCardBean>
+	 */
+	public ArrayList<BookCardBean> searchBookCard(String s, int pageNow, int pageSize) {
+		ArrayList<BookCardBean> al = new ArrayList<BookCardBean>();
+		String sql = "select * from BOOKCARD WHERE CONCAT(BCID,BNAME) LIKE '%" + s + "%' AND CONCAT(BCID,BNAME) IS NOT NULL limit " + (pageNow - 1) * pageSize + "," + pageSize;
+		ConnDB cdb = new ConnDB();
+		cdb.setSqlStatement(sql);
+		cdb.execQuery();
+		ResultSet rs = cdb.getResultSet();
+		try {
+			while (rs.next()) {
+				BookCardBean bcb = new BookCardBean();
+				bcb.setBCID(rs.getString(1));
+				bcb.setBNAME(rs.getString(2));
+				bcb.setBPASSWD(rs.getString(3));
+				bcb.setBSEX(rs.getString(4));
+				bcb.setBAUTH(rs.getInt(5));
+				bcb.setBDATE(rs.getString(6));
+				bcb.setBAVATAR(rs.getString(7));
+
+				al.add(bcb);
+
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(BookCardBO.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			cdb.close();
+		}
+		return al;
+	}
+
+	/**
+	 * 返回搜索结果数
+	 * <p/>
+	 * @param s 搜索字符串
+	 * <p/>
+	 * @return 返回这个字符串搜索的结果数
+	 */
+	public int getSearchCount(String s) {
+		String sql = "select count(*) from BOOKCARD WHERE CONCAT(BCID,BNAME) LIKE '%" + s + "%' AND CONCAT(BCID,BNAME) IS NOT NULL";
+		ConnDB cdb = new ConnDB();
+		cdb.setSqlStatement(sql);
+		cdb.execQuery();
+		try {
+			if (cdb.getResultSet().next()) {
+				return cdb.getResultSet().getInt(1);
+
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(BookCardBO.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			cdb.close();
+		}
+		return 0;
 	}
 }

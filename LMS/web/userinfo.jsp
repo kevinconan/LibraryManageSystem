@@ -9,7 +9,7 @@
 <%
 	BookCardBean bcb = (BookCardBean) request.getSession().getAttribute("loginInfo");
 	if (bcb == null) {
-		response.sendRedirect("Login.jsp?from=userinfo");
+		response.sendRedirect("Login.jsp?from=userinfo.jsp");
 		bcb = new BookCardBean();
 	}
 %>

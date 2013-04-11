@@ -1,0 +1,17 @@
+@charset "utf-8";
+#admininfo {
+	margin: 50px;
+	float: left;
+}
+#bookcheck {
+	float:left;
+	margin: 50px;
+	padding: 50px;
+}
+#bookcheck form table tr th {
+	font-size: large;
+}
+#newbook{
+	margin:50px;
+}
+
