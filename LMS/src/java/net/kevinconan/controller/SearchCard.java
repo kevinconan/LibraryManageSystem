@@ -11,8 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.kevinconan.model.BookBO;
-import net.kevinconan.model.BookBean;
+import net.kevinconan.model.*;
 
 /**
  *
@@ -38,7 +37,7 @@ public class SearchCard extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		int pageSize = 10;
 		int pageNow = 1;
-		String searchString = request.getParameter("searchText");
+		String searchString = request.getParameter("searchBookCard");
 		String pageNowString = request.getParameter("pageNow");
 		String identity = request.getParameter("admin");
 		if (identity == null) {
@@ -48,19 +47,20 @@ public class SearchCard extends HttpServlet {
 			pageNow = Integer.parseInt(pageNowString);
 		}
 		System.out.println(pageNow);
-		BookBO bbo = new BookBO();
-		bbo.setSearchPattern(searchString);
-		int resultCount = bbo.getSearchCount();
+		BookCardBO bcbo = new BookCardBO();
+		System.out.println(searchString);
+		int resultCount = bcbo.getSearchCount(searchString);
+		System.out.println(resultCount);
 		int pageCount = (int) Math.ceil(1.0 * resultCount / pageSize);
 		request.setAttribute("pageCount", pageCount + "");
 
-		ArrayList<BookBean> al = bbo.searchBook(pageNow, pageSize);
+		ArrayList<BookCardBean> al = bcbo.searchBookCard(searchString, pageNow, pageSize);
 		request.setAttribute("searchresult", al);
 		System.out.println(al);
 		if (identity.equals("admin")) {
 			//request.getRequestDispatcher("")
 		} else {
-			request.getRequestDispatcher("searchresult.jsp?searchText=" + searchString + "&pageNow=" + pageNow).forward(request, response);
+			request.getRequestDispatcher("searchcardres.jsp?searchBookCard=" + searchString + "&pageNow=" + pageNow).forward(request, response);
 		}
 
 	}

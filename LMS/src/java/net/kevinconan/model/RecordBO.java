@@ -181,16 +181,11 @@ public class RecordBO {
 	 */
 	public boolean outBook(String ISBN, String BCID, String ADID) {
 		boolean b = false;
+
+
 		ConnDB cdb = new ConnDB();
 		cdb.connect();
-		if (cdb.getExecUpdateNum() == 1) {
-			//修改数据库中书籍库存量
-			BookBO bbo = new BookBO();
-			if (!bbo.updateBookNum(ISBN, "out")) {
-				return false;
-			}
-			b = true;
-		}
+
 		Date date = new Date(new java.util.Date().getTime());
 
 		//	System.out.println(date);
@@ -198,6 +193,14 @@ public class RecordBO {
 		cdb.setSqlStatement(sql);
 		cdb.execUpdate();
 
+		if (cdb.getExecUpdateNum() == 1) {
+			//修改数据库中书籍库存量
+			BookBO bbo = new BookBO();
+			b = true;
+			if (!bbo.updateBookNum(ISBN, "out")) {
+				b = false;
+			}
+		}
 		cdb.close();
 		return b;
 

@@ -64,12 +64,12 @@
 
 						<tr>
 							<td>
-								<form name="groovyform" action="#?type=add" method="post">
+								<form name="groovyform" action="updateCard.jsp?type=add" method="post">
 									<input
 										type="submit"
 										name="newbookcard"
 										class="groovybutton"
-										value="添加新借书卡"
+										value="借书卡注册"
 										title=""
                                         style="font-size:100px;margin:50px;"
 										onMouseOver="goLite(this.form.name, this.name)"
@@ -78,7 +78,7 @@
 
 								<div id="searchbox"><form name="form1" method="post" action="SearchCard">
 										<input name="searchBookCard" type="text" class="components" id="searchBookCard" size="80">
-										<input name="button" type="submit" class="components" id="button" value="开始搜索">
+										<input name="button" type="submit" class="components" id="button" value="搜索借书卡">
 									</form></div></td>
 						</tr>
 

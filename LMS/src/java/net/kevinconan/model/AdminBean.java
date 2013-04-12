@@ -17,6 +17,10 @@ public class AdminBean {
 	private String AGENDER;
 	private String AVATAR;
 
+	public AdminBean() {
+		AVATAR = "0";
+	}
+
 	public String getAVATAR() {
 		return AVATAR;
 	}

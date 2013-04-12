@@ -83,7 +83,7 @@ public class BookBO {
 	public boolean updateBookNum(String ISBN, String Type) {
 		boolean b = false;
 		ConnDB cdb = new ConnDB();
-
+		cdb.connect();
 		int BNUM = getBookNumByISBN(ISBN);
 		String sql;
 		if (BNUM < 1) {
@@ -98,6 +98,7 @@ public class BookBO {
 			return b;
 		}
 		//	System.out.println(sql);
+
 		cdb.setSqlStatement(sql);
 		cdb.execUpdate();
 		if (cdb.getExecUpdateNum() == 1) {

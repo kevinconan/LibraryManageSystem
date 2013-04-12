@@ -4,6 +4,7 @@
  */
 package net.kevinconan.model;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,7 +104,8 @@ public class BookCardBO {
 		SimpleMessageDigest psw = new SimpleMessageDigest();
 
 		bcb.setBPASSWD(psw.getSHA1String(bcb.getBPASSWD()));
-		String sql = "update bookcard set BAPSSWD='" + bcb.getBPASSWD() + "',BSEX='" + bcb.getBSEX() + "',BAUTH='" + bcb.getBAUTH() + "',BDATE='" + bcb.getBDATE() + "',BAVATAR='" + bcb.getBAVATAR() + "' where BCID='" + bcb.getBCID() + "'";
+		String sql = "update bookcard set BNAME='" + bcb.getBNAME() + "',BPASSWD='" + bcb.getBPASSWD() + "',BSEX='" + bcb.getBSEX() + "',BAUTH='" + bcb.getBAUTH() + "',BDATE='" + bcb.getBDATE() + "',BAVATAR='" + bcb.getBAVATAR() + "' where BCID='" + bcb.getBCID() + "'";
+		System.out.println(sql);
 		ConnDB cdb = new ConnDB();
 		cdb.connect();
 		cdb.setSqlStatement(sql);
@@ -141,7 +143,7 @@ public class BookCardBO {
 	 * 注册借书卡
 	 * <p/>
 	 * @param bcb
-	 * <p/>
+	 *               <p/>
 	 * @return
 	 */
 	public boolean addBookCard(BookCardBean bcb) {
@@ -163,9 +165,9 @@ public class BookCardBO {
 
 			bcb.setBPASSWD(psw.getSHA1String(bcb.getBPASSWD()));
 
-
+			Date bdate = new Date(new java.util.Date().getTime());
 			//写入数据库
-			String sql2 = "INSERT into user (BCID,BAPSSWD,BSEX,BAUTH,BDATE,BAVATAR) VALUES ('" + bcb.getBCID() + "','" + bcb.getBPASSWD() + "','" + bcb.getBSEX() + "','" + bcb.getBAUTH() + "','" + bcb.getBDATE() + "','" + bcb.getBAVATAR() + "')";
+			String sql2 = "INSERT into bookcard (BCID,BNAME,BPASSWD,BSEX,BAUTH,BDATE,BAVATAR) VALUES ('" + bcb.getBCID() + "','" + bcb.getBNAME() + "','" + bcb.getBPASSWD() + "','" + bcb.getBSEX() + "','" + bcb.getBAUTH() + "','" + bdate + "','" + bcb.getBAVATAR() + "')";
 
 			cdb.setSqlStatement(sql2);
 			cdb.execUpdate();
@@ -195,6 +197,7 @@ public class BookCardBO {
 		ArrayList<BookCardBean> al = new ArrayList<BookCardBean>();
 		String sql = "select * from BOOKCARD WHERE CONCAT(BCID,BNAME) LIKE '%" + s + "%' AND CONCAT(BCID,BNAME) IS NOT NULL limit " + (pageNow - 1) * pageSize + "," + pageSize;
 		ConnDB cdb = new ConnDB();
+		cdb.connect();
 		cdb.setSqlStatement(sql);
 		cdb.execQuery();
 		ResultSet rs = cdb.getResultSet();
@@ -202,8 +205,8 @@ public class BookCardBO {
 			while (rs.next()) {
 				BookCardBean bcb = new BookCardBean();
 				bcb.setBCID(rs.getString(1));
-				bcb.setBNAME(rs.getString(2));
-				bcb.setBPASSWD(rs.getString(3));
+				bcb.setBPASSWD(rs.getString(2));
+				bcb.setBNAME(rs.getString(3));
 				bcb.setBSEX(rs.getString(4));
 				bcb.setBAUTH(rs.getInt(5));
 				bcb.setBDATE(rs.getString(6));
@@ -230,6 +233,8 @@ public class BookCardBO {
 	public int getSearchCount(String s) {
 		String sql = "select count(*) from BOOKCARD WHERE CONCAT(BCID,BNAME) LIKE '%" + s + "%' AND CONCAT(BCID,BNAME) IS NOT NULL";
 		ConnDB cdb = new ConnDB();
+		cdb.connect();
+		System.out.println(sql);
 		cdb.setSqlStatement(sql);
 		cdb.execQuery();
 		try {

@@ -48,6 +48,7 @@ public class BookCardCAdmin extends HttpServlet {
 			BookCardBean bcb = new BookCardBean();
 			bcb.setBCID(bcid);
 			bcb.setBPASSWD(bpasswd);
+
 			bcb.setBNAME(bname);
 			bcb.setBSEX(bsex);
 			bcb.setBAUTH(bauth);
@@ -63,6 +64,7 @@ public class BookCardCAdmin extends HttpServlet {
 
 				}
 			} else if (type.equals("upcardconfirm")) {
+				System.out.println(bcb.getBNAME());
 				if (bcbo.updateBookCard(bcb)) {
 
 					request.getRequestDispatcher("AdminActRes.jsp?result=成功&from=AdminBookCards.jsp&actionType=修改借书卡").forward(request, response);
@@ -74,6 +76,7 @@ public class BookCardCAdmin extends HttpServlet {
 		} else if (type.equals("update")) {
 			BookCardBO bcbo = new BookCardBO();
 			BookCardBean bcb = bcbo.showBookCard(bcid);
+			System.out.println(bcid);
 			request.setAttribute("cardInfo", bcb);
 			request.getRequestDispatcher("updateCard.jsp?from=AdminBookCards.jsp").forward(request, response);
 		} else if (type.equals("del")) {
@@ -82,7 +85,7 @@ public class BookCardCAdmin extends HttpServlet {
 			if (bcbo.delBookCard(bcid)) {
 				request.getRequestDispatcher("SearchCard?delok=ok").forward(request, response);
 			} else {
-				request.getRequestDispatcher("??.jsp?delok=failed").forward(request, response);
+				request.getRequestDispatcher("AdminActRes.jsp?result=失败&from=AdminBookCards.jsp&actionType=删除借书卡").forward(request, response);
 			}
 
 		}
