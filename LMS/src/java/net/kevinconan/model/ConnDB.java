@@ -24,7 +24,7 @@ public class ConnDB {
 	private int execUpdateNum = 0;
 	private String driver = "com.mysql.jdbc.Driver";
 	private String user = "root";
-	private String pw = "4sfyea6z";
+	private String pw = "root";
 	private String url = "jdbc:mysql://localhost:3306/";
 	private String db = "librarymanage";
 
